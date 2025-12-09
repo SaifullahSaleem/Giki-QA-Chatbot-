@@ -1,0 +1,12 @@
+scrapy>=2.8.0
+beautifulsoup4>=4.12.2
+requests>=2.31.0
+pinecone>=2.2.1
+openai>=0.27.0
+flask>=2.3.2
+pyngrok>=5.1.0
+mcp>=1.0.0
+sentence-transformers>=2.2.2
+torch>=2.0
+tqdm>=4.66.1
+

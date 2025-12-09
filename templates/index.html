@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinecone + Groq Chat</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="chat-container">
+    <header>
+      <h1>GIKI query chatbot</h1>
+    </header>
+
+    <div id="chat-box" class="chat-box"></div>
+
+    <form id="chat-form" class="chat-form">
+      <input
+        type="text"
+        id="query"
+        name="query"
+        placeholder="Ask a question about giki ....."
+        autocomplete="off"
+        required
+      />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const chatBox = document.getElementById("chat-box");
+    const queryInput = document.getElementById("query");
+
+    function appendMessage(sender, text, isHTML = false) {
+      const msg = document.createElement("div");
+      msg.className = sender === "user" ? "chat-message user" : "chat-message bot";
+      msg.innerHTML = isHTML ? text : `<p>${text}</p>`;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const query = queryInput.value.trim();
+      if (!query) return;
+
+      appendMessage("user", query);
+      queryInput.value = "";
+      appendMessage("bot", "Thinking...");
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+
+        const data = await response.json();
+        const lastBotMsg = chatBox.querySelector(".chat-message.bot:last-child");
+        if (data.answer) {
+          lastBotMsg.innerHTML = data.answer; // support markdown-rendered HTML
+        } else {
+          lastBotMsg.innerHTML = "<p>Sorry, an error occurred.</p>";
+        }
+      } catch (err) {
+        console.error(err);
+        appendMessage("bot", "Network error. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>

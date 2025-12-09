@@ -1,0 +1,4 @@
+venv/ 
+.venv/ 
+# Additional common Python ignores 
+__pycache__/ 

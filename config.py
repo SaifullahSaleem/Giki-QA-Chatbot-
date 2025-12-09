@@ -1,0 +1,5 @@
+# config.py
+OPENAI_API_KEY = "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"
+PINECONE_API_KEY = "pcsk_73poyB_P1cYmE8HYvdEd7XEbGk7XNcmfQy4v1ubGFgeQbhirCbPhGSqwSf2AVnTwcQkiVf"
+PINECONE_ENVIRONMENT = "us-east1-aws"
+PINECONE_INDEX_NAME = "giki-data-index"
